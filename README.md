@@ -24,9 +24,9 @@ contains three type of data
 	- PMIN: the minimum amount of power the powerplant generates when switched on
 	- pmax: the maximum amount of power the powerplant can generate
   
-## Assumption 
-1- If a residual load after wind turbine production is less than the PMIN value of gasfired and greater than the pmax value of turbojet, then a plant with smaller 'PMIN' will be selected to cater remaining power requirement. 
-2- Final demand will not be more than total power capacity of all plants.
+## Assumptions 
+- **1**: If a residual load after wind turbine production is less than the PMIN value of gasfired and greater than the pmax value of turbojet, then a plant with smaller 'PMIN' will be selected to cater remaining power requirement. 
+- **2**: Final demand will not be more than total power capacity of all plants.
   
 **modules** I have developed four modules for this solution: 
 - **fuel_mapping.py** : Class Fuel_mapping. This class read the fuels section of the payload and filter for fuel type with a formula and its rate.  
