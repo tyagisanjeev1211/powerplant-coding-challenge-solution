@@ -1,9 +1,7 @@
 FROM redhat/ubi8
 
 LABEL "Developed by"="Sanjeev Tyagi"
-LABEL "medium.com"="https://medium.com/@tyagisanjeev_1211"
-
-RUN echo 'root:q48stG1a' |chpasswd
+LABEL "medium.com"="https://medium.com/@tyagisanjee1211"
 
 ## RUN dnf upgrade
 RUN dnf -y install python3.11
@@ -14,7 +12,6 @@ RUN pip3 install aiofiles           ## Static file (javascript, css, media files
 RUN pip3 install python-multipart   ## multipart HTML form. Like file upload 
 
 RUN useradd styagi
-RUN echo 'styagi:docker123' | chpasswd
 
 RUN mkdir -p /home/styagi/app
 ADD project /home/styagi/app/
