@@ -11,13 +11,13 @@
 	
 ### payload
 contains three type of data 
-- **load**: Load is the demand of power in an hour. The load is the amount of energy (MWh) that needs to be generated. At any moment in time, all available powerplants need to generate the power to exactly match the load.
-- **fuels**: There are three types of fuels mentioned in JSON.
+**load**: Load is the demand of power in an hour. The load is the amount of energy (MWh) that needs to be generated. At any moment in time, all available powerplants need to generate the power to exactly match the load.
+**fuels**: There are three types of fuels mentioned in JSON.
 	- Gas: the price of gas per MWh. Thus, if gas is at 6 euros/MWh and if the efficiency of the powerplant is 50% (i.e., 2 units of gas will generate one unit of electricity), the cost of generating 1 MWh is 12 euros.
 	- Kerosin: the price of kerosine per MWh
 	- wind: Percentage of wind. Example: if there is on average 25% wind during an hour, a wind turbine with a Pmax of 4 MW will generate 1 MWh of energy.
 	- CO2: (This was optional, and I have a small confusion about using this variable.) so I have not included this in the solution)
-- **Powerplants**: 
+**Powerplants**: 
 	- name: Name of Powerplant
 	- type: type of energy used in a plant to generate power
 	- Efficiency: at which they convert a MWh of fuel into a MWh of electrical energy. Wind turbines do not consume 'fuel' and thus are considered to generate power at zero price.
@@ -25,16 +25,15 @@ contains three type of data
 	- pmax: the maximum amount of power the powerplant can generate
   
 ## Assumption 
-If a residual load after wind turbine production is less than the PMIN value of gasfired and greater than the pmax value of turbojet, then the logic embedded here can fail. This remaining value will not be adjusted anywhere because gas-fired plants will only be started if the load value is greater than the plant's PMIN value.
-This scenario is not catered in the present solution with the assumption that this scenario will not occur.
-
-## Code Description
+1- If a residual load after wind turbine production is less than the PMIN value of gasfired and greater than the pmax value of turbojet, then a plant with smaller 'PMIN' will be selected to cater remaining power requirement. 
+2- Final demand will not be more than total power capacity of all plants.
+  
 **modules** I have developed four modules for this solution: 
 - **fuel_mapping.py** : Class Fuel_mapping. This class read the fuels section of the payload and filter for fuel type with a formula and its rate.  
 - **powerplant.py** : Class Power_plant. This class reads the powerplants section of the payload and generates an object of powerplants with its fuel mapping object.
                       After this class, we have every required information in the powerplant object, and this object is ready for processing.
 - **merit_order.py** : Class Merit_order. This class sorts the list of powerplant objects based on power generation cost.
-- **production_plan.py** : Class Production_plan. This class prepares the actual power production plan based on a sorted list of powerplant objects. 
+- **Merit_order** : Class Production_plan. This class prepares the actual power production plan based on a sorted list of powerplant objects. 
 
 **Note:** I am handing post request directly using Request class 
 ```
@@ -46,7 +45,6 @@ http://127.0.0.1:8888/docs
 ``` 
 will give "Parameters" as "No parameters" 
 
-## Deployment
 **Python version** 
 ```
 [styagi@be69001a324d src]$ python3 --version
@@ -77,7 +75,7 @@ uvicorn==0.30.6
 FROM redhat/ubi8
 
 LABEL "Developed by"="Sanjeev Tyagi"
-LABEL "medium.com"="https://medium.com/@tyagisanjeev_1211"
+LABEL "medium.com"="https://medium.com/@tyagisanjeev1211"
 
 ## Change password with your convenience
 RUN echo 'root:q48stG1a' |chpasswd
@@ -107,15 +105,15 @@ CMD nohup python3 main.py
 ```
 
 
-## Deply the solution as Docker container 
+**Deply the solution** 
 - Git clone to local 
 ```
-git clone https://github.com/tyagisanjeev1211/powerplant-coding-challenge-solution.git
+git clone https://github.com/tyagisanjeev1211/angleClockHands.git
 ```
 
 - Directory change to app folder and check permissions 
 ```
-cd /home/styagi/repo/powerplant-coding-challenge-solution/
+cd /home/styagi/src/
 ```
 
 - Build Docker image 
